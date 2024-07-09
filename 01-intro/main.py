@@ -108,6 +108,15 @@ def llm(prompt):
     return len(tokens)
 
 
+def llm_ollama(prompt):
+    response = client.chat.completions.create(
+        model='gemma:2b',
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.0
+    )
+    return response
+
+
 def run():
     question = "How do I execute a command in a running docker container?"
     documents_raw = download_documents()
@@ -119,6 +128,20 @@ def run():
     print(len(prompt))
     # print(prompt)
     print(llm(prompt))
+
+
+def run_ollama():
+    from openai import OpenAI
+
+    client = OpenAI(
+        base_url='http://localhost:11434/v1/',
+        api_key='ollama',
+    )
+    prompt = "What's the formula for energy?"
+    response = llm_ollama(prompt)
+    print(response)
+
+
 
 
 if __name__ == "__main__":
